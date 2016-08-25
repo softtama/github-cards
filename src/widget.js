@@ -69,6 +69,8 @@
       return;
     }
 
+    var showbio = querydata(card, 'show-bio') !== null;
+
     count += 1;
     var width = querydata(card, 'width');
     var height = querydata(card, 'height');
@@ -86,6 +88,9 @@
     iframe.setAttribute('allowtransparency', true);
 
     var url = cardurl + '?user=' + user + '&identity=' + identity;
+    if (showbio) {
+      url += '&showbio=1';
+    }
     if (repo) {
       url += '&repo=' + repo;
     }

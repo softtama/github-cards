@@ -104,7 +104,7 @@ var qs = querystring();
     }
   }
 
-  function userCard(user) {
+  function userCard(user, showbio) {
     var url = baseurl + 'users/' + user;
     request(url, function(data) {
       data = data || {};
@@ -121,6 +121,12 @@ var qs = querystring();
       data.public_repos = numberic(data.public_repos) || defaults;
       data.public_gists = numberic(data.public_gists) || defaults;
       data.followers = numberic(data.followers) || defaults;
+
+      var bio = '';
+      if (showbio && escape(data.bio) != '') {
+        bio = '<p>' + escape(data.bio) + '</p>';
+      }
+      data.bio = bio;
 
       var job = 'Not available for hire.';
       if (data.hireable) {
@@ -213,7 +219,11 @@ var qs = querystring();
   } else if (qs.repo) {
     repoCard(qs.user, qs.repo);
   } else {
-    userCard(qs.user);
+    if (qs.showbio) {
+      userCard(qs.user, qs.showbio);
+    } else {
+      userCard(qs.user);
+    }
   }
 
   function escape(text) {
